@@ -266,8 +266,7 @@ class OggEncoder( _Encoder ):
       if force or util.newer( self.src, self.dst):
          self._pre_encode()
          # encode to OGG
-         err = sp.call( 'oggenc -q %s -o "%s" "%s"' %
-               (self.q, self.dst, self.src), shell=True, stderr=NULL)
+         err = sp.call(['oggenc', '-q', self.q, '-o', self.dst, self.src], stderr=NULL)
          if err == -2:  # keyboard interrupt
             os.remove(self.dst) # clean-up partial file
             raise KeyboardInterrupt
@@ -331,8 +330,7 @@ class OggEncoder( _Encoder ):
                len(bin_cover),
                bin_cover)
          meta_block = base64.b64encode(meta_block)
-         err = sp.call( 'vorbiscomment -a -t "META_BLOCK_PICTURE=%s" "%s"' %
-                 (meta_block, self.dst), shell=True, stderr=NULL)
+         err = sp.call(['vorbiscomment', '-a', '-t', "META_BLOCK_PICTURE=%s" % meta_block, self.dst], stderr=NULL)
          return self._check_err( err, "OGG add-cover failed:" )
 
 
